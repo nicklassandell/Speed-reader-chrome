@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Speed reader</title>
+	<style>
+		body {
+			padding: 40px;
+			font-family: sans-serif;
+			font-size: 15px;
+			color: #444;
+			line-height: 1.3em;
+		}
+
+		h1 {
+			margin: 0 0 1em 0;
+			line-height: 1.2em;
+		}
+	</style>
+</head>
+<body>
+
+	<h1>Settings</h1>
+	
+	<p>
+		<input class="autosave" type="checkbox" id="chk-hide-toast" data-option="hideToast">
+		<label for="chk-hide-toast">Disable toast</label>
+	</p>
+
+	<p>
+		<input class="autosave" type="checkbox" id="chk-hide-rightclick" data-option="hideContextMenu">
+		<label for="chk-hide-rightclick">Disable right click option</label>
+	</p>
+
+	<p>* All settings will auto save.</p>
+	
+	<script src="js/options.js"></script>
+</body>
+</html>
