@@ -1,0 +1,39 @@
+
+@import "compass/css3";
+
+#sr-toast {
+	position: fixed;
+	z-index: 600;
+	bottom: 20px;
+	right: 20px;
+	background: rgba(50,50,50,.6);
+	padding: 10px 15px;
+	font-size: 13px;
+	font-family: sans-serif;
+	cursor: pointer;
+	opacity: 0;
+	display: block;
+	@include user-select(none);
+	@include transform(scale(.2));
+	@include transition-duration(.4s);
+	@include border-radius(100px);
+
+	&, &:hover {
+		color: #FFF;
+		text-decoration: none;
+	}
+
+	&.visible {
+		opacity: 1;
+		@include transform(none);
+		@include transition-timing-function(cubic-bezier(0.000, 0.780, 0.190, 1.270));
+
+		&:hover {
+			background: rgba(50,50,50,.9);
+		}
+		&:active {
+			background: rgba(50,50,50,1);
+			@include transition-duration(.05s);
+		}
+	}
+}

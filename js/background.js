@@ -1,5 +1,4 @@
 
-
 var appUrl = 'http://localhost/speed-reader/',
 	appUrlSubmit = appUrl + 'text/';
 
@@ -20,13 +19,15 @@ chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
 	// Show or hide toast for this tab
 	getOption('hideToast', function(hideToast) {
 		if(!hideToast) {
-			chrome.tabs.executeScript(tabId, {file: 'js/content.js'});
+			chrome.tabs.insertCSS(tabId, {file: 'css/content.css'}, function() {
+				chrome.tabs.executeScript(tabId, {file: 'js/content.js'});
+			});
 		}
 	});
 
 });
 
-
+// When the toolbar icon is clicked
 chrome.browserAction.onClicked.addListener(function(tab) {
 	if (tab.url.match(/^https?:\/\//)) {
 		openApp(tab.url);

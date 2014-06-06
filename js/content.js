@@ -1,10 +1,14 @@
 ;(function() {
 
-	var frag = create('<div id="sr-toast" style="position: fixed; bottom: 20px; right: 20px; z-index: 500; padding: 10px; background: rgba(0,0,0,.7); color: #FFF; cursor: pointer;">Speed read</div>');
+	var frag = create('<a id="sr-toast">Speed read</a>');
 
 	document.body.insertBefore(frag, document.body.childNodes[0]);
 
 	var elem = document.getElementById('sr-toast');
+
+	setTimeout(function() {
+		elem.className = 'visible';
+	}, 20);
 
 	elem.onclick = function() {
 		chrome.extension.sendMessage({
