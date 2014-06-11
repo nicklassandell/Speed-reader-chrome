@@ -18,6 +18,8 @@
         "persistent": false
     },
 
+    "web_accessible_resources": ["img/*.png"],
+
     "options_page": "options.html",
 
     "browser_action": {
