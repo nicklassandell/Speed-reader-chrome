@@ -33,12 +33,12 @@
 
 	hideToastBtn.onclick = function() {
 		toastContainer.parentElement.removeChild(toastContainer);
-		if(confirm('Disable toasts on this domain forever?')) {
+		//if(confirm('Disable toasts on this domain forever?')) {
 			chrome.extension.sendMessage({
 				action: 'blacklist',
 				url: window.location.href
 			});
-		}
+		//}
 	}
 
 
