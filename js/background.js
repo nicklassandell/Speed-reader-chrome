@@ -16,13 +16,19 @@ chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
 	// Update context menu visibility based on setting
 	updateContextMenu();
 
-	// Show or hide toast for this tab
-	getOption('hideToast', function(hideToast) {
-		if(!hideToast) {
-			chrome.tabs.insertCSS(tabId, {file: 'css/content.css'}, function() {
-				chrome.tabs.executeScript(tabId, {file: 'js/content.js'});
-			});
+	isBlacklisted(tab.url, function(isBlacklisted) {
+		if(isBlacklisted) {
+			return false;
 		}
+
+		// Show or hide toast for this tab
+		getOption('hideToast', function(hideToast) {
+			if(!hideToast) {
+				chrome.tabs.insertCSS(tabId, {file: 'css/content.css'}, function() {
+					chrome.tabs.executeScript(tabId, {file: 'js/content.js'});
+				});
+			}
+		});
 	});
 
 });
@@ -38,8 +44,25 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 
 // Litsen for callbacks from injected code
 chrome.extension.onMessage.addListener(function(data) {
-	if(typeof data === 'object' && data.openUrl) {
-		openApp(data.openUrl);
+	if(typeof data === 'object') {
+
+		// Open URL in app
+		if(data.action === 'openUrl') {
+			openApp(data.url);
+
+		// Add domain to blacklist
+		} else if(data.action == 'blacklist') {
+			var domain = new URL(data.url).hostname;
+
+			// Get current value and append domain to it
+			getOption('toastBlacklist', function(currVal) {
+				var newVal = currVal + "\r\n" + domain;
+				chrome.storage.sync.set({
+					toastBlacklist: newVal
+				});
+			});
+			
+		}
 	}
 });
 
@@ -118,5 +141,23 @@ function getOption(option, callback) {
 		} else {
 			callback(false);
 		}
+	});
+}
+
+function isBlacklisted(url, callback) {
+	var currDom = new URL(url).hostname;
+	var stored = getOption('toastBlacklist', function(stored) {
+		var split = stored.split(/\r|\n/g);
+		
+		if(split.length > 0) {
+			for(var i=0; i < split.length; ++i) {
+				var dom = split[i];
+				if(dom.indexOf(currDom) !== -1) {
+					callback(true);
+					return true; // Prevent loop from continuing
+				}
+			}
+		}
+		callback(false);
 	});
 }

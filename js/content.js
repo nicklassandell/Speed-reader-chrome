@@ -2,7 +2,7 @@
 
 	var html = '';
 
-	html += '<div class="sr-toolbar">';
+	html += '<div id="sr-toast-container" class="sr-toolbar">';
 	html += 	'<a title="Read with Champ" id="sr-toast" class="sr-toast-button">';
 	html +=	 		'<img src="'+ chrome.extension.getURL('img/read.png') +'" alt="Read with Champ" />';
 	html +=		'</a>';
@@ -11,23 +11,38 @@
 	html += 	'</a>';
 	html += '</div>';
 
-	var frag = create(html);
+	document.body.insertBefore(createFragment(html), document.body.childNodes[0]);
 
-	document.body.insertBefore(frag, document.body.childNodes[0]);
 
-	var elem = document.getElementById('sr-toast');
+	var toastBtn = document.getElementById('sr-toast'),
+		hideToastBtn = document.getElementById('sr-toast-hide'),
+		toastContainer = document.getElementById('sr-toast-container');
 
+	// Make button visible on load
 	setTimeout(function() {
-		elem.className += ' visible';
+		toastBtn.className += ' visible';
 	}, 20);
 
-	elem.onclick = function() {
+
+	toastBtn.onclick = function() {
 		chrome.extension.sendMessage({
-			openUrl: window.location.href
+			action: 'openUrl',
+			url: window.location.href
 		});
 	};
 
-	function create(htmlStr) {
+	hideToastBtn.onclick = function() {
+		toastContainer.parentElement.removeChild(toastContainer);
+		chrome.extension.sendMessage({
+			action: 'blacklist',
+			url: window.location.href
+		});
+	}
+
+
+
+
+	function createFragment(htmlStr) {
 	    var frag = document.createDocumentFragment(),
 	        temp = document.createElement('div');
 	    temp.innerHTML = htmlStr;

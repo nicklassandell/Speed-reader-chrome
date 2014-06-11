@@ -16,6 +16,14 @@
 			margin: 0 0 1em 0;
 			line-height: 1.2em;
 		}
+
+		label {
+			cursor: pointer;
+		}
+
+		textarea {
+			font-family: sans-serif;
+		}
 	</style>
 </head>
 <body>
@@ -32,7 +40,12 @@
 		<label for="chk-hide-rightclick">Disable right click option</label>
 	</p>
 
-	<p>* All settings will auto save.</p>
+	<p>
+		<label for="textarea-blacklist">Disable toast on these domains:</label><br/>
+		<textarea class="autosave" id="textarea-blacklist" data-option="toastBlacklist" cols="40" rows="8" placeholder="One domain per row"></textarea>
+	</p>
+
+	<p><button id="saveAndClose">Save and close</button>.</p>
 	
 	<script src="js/options.js"></script>
 </body>

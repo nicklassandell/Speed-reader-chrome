@@ -18,6 +18,11 @@
 					continue;
 				}
 
+				// Skip if invalid stored value
+				if(stored[optionName] == 'undefined') {
+					continue;
+				}
+
 				// Check if we have a stored value of this option,
 				// and if so, update form elem
 				if(stored[optionName] !== 'undefined') {
@@ -29,24 +34,33 @@
 				}
 
 				// Change listener which updates stored value
-				opt.onchange = function() {
-					var value = this.value,
-						optionName = this.getAttribute('data-option'),
-						data = {};
-
-					if(this.type === 'checkbox') {
-						value = this.checked;
-					}
-
-					data[optionName] = value;
-
-					if(optionName) {
-						chrome.storage.sync.set(data);
-					}
-				}
+				opt.onchange = saveOption;
+				opt.onkeyup = saveOption;
 			}
 
 		});
+	}
+
+	function saveOption() {
+		var value = this.value,
+			optionName = this.getAttribute('data-option'),
+			data = {};
+
+		if(this.type === 'checkbox') {
+			value = this.checked;
+		}
+
+		data[optionName] = value;
+
+		if(optionName) {
+			chrome.storage.sync.set(data);
+		}
+	}
+
+
+	var closeBtn = document.getElementById('saveAndClose');
+	closeBtn.onclick = function() {
+		window.close();
 	}
 
 })();
