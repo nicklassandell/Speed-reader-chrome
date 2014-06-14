@@ -11,7 +11,7 @@
 	html += 	'</a>';
 	html += '</div>';
 
-	document.body.innerHTML += html;
+	document.body.insertBefore(createFragment(html), document.body.childNodes[0]);
 
 
 	var toastBtn = document.getElementById('sr-toast'),
@@ -41,7 +41,6 @@
 		toastContainer.remove();
 	}
 
-
 	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		if(request.action === 'ping') {
 			sendResponse({
@@ -50,4 +49,14 @@
 		}
 	});
 
+
+	function createFragment(htmlStr) {
+	    var frag = document.createDocumentFragment(),
+	        temp = document.createElement('div');
+	    temp.innerHTML = htmlStr;
+	    while (temp.firstChild) {
+	        frag.appendChild(temp.firstChild);
+	    }
+	    return frag;
+	}
 })();
