@@ -12,6 +12,8 @@ chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
 		return false;
 	}
 
+	updateContextMenu();
+
 	// Try to ping tab to check if script has already been injected
 	chrome.tabs.sendMessage(tabId, {action: 'ping'}, function(response) {
 
@@ -89,7 +91,7 @@ function updateContextMenu() {
 
 			chrome.contextMenus.create({
 				id: 'contextSelection',
-				title : 'Speed Read selected text',
+				title : 'Read selected text with Champ',
 				contexts : ['selection']
 			});
 
