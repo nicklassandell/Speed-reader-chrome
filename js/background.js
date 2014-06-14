@@ -5,7 +5,6 @@ var appUrl = 'http://localhost/speed-reader/',
 
 var contextMenuAdded = false;
 
-
 chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
 
 	// If not complete or invalid URL
@@ -13,21 +12,28 @@ chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
 		return false;
 	}
 
-	// Update context menu visibility based on setting
-	updateContextMenu();
+	// Try to ping tab to check if script has already been injected
+	chrome.tabs.sendMessage(tabId, {action: 'ping'}, function(response) {
 
-	isBlacklisted(tab.url, function(isBlacklisted) {
-		if(isBlacklisted) {
+		// Already injected, let's bail
+		if(response) {
 			return false;
 		}
 
-		// Show or hide toast for this tab
-		getOption('hideToast', function(hideToast) {
-			if(!hideToast) {
-				chrome.tabs.insertCSS(tabId, {file: 'css/content.css'}, function() {
-					chrome.tabs.executeScript(tabId, {file: 'js/content.js'});
-				});
+		// Check if domain is blacklisted
+		isBlacklisted(tab.url, function(isBlacklisted) {
+			if(isBlacklisted) {
+				return false;
 			}
+
+			// Show or hide toast for this tab
+			getOption('hideToast', function(hideToast) {
+				if(!hideToast) {
+					chrome.tabs.insertCSS(tabId, {file: 'css/content.css'}, function() {
+						chrome.tabs.executeScript(tabId, {file: 'js/content.js'});
+					});
+				}
+			});
 		});
 	});
 

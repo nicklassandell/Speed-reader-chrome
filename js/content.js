@@ -11,7 +11,7 @@
 	html += 	'</a>';
 	html += '</div>';
 
-	document.body.insertBefore(createFragment(html), document.body.childNodes[0]);
+	document.body.innerHTML += html;
 
 
 	var toastBtn = document.getElementById('sr-toast'),
@@ -24,34 +24,30 @@
 	}, 20);
 
 
-	toastBtn.onclick = function() {
+	toastBtn.onclick = function(e) {
+		e.preventDefault();
 		chrome.extension.sendMessage({
 			action: 'openUrl',
 			url: window.location.href
 		});
 	};
 
-	hideToastBtn.onclick = function() {
-		toastContainer.parentElement.removeChild(toastContainer);
-		//if(confirm('Disable toasts on this domain forever?')) {
-			chrome.extension.sendMessage({
-				action: 'blacklist',
-				url: window.location.href
+	hideToastBtn.onclick = function(e) {
+		e.preventDefault();
+		chrome.extension.sendMessage({
+			action: 'blacklist',
+			url: window.location.href
+		});
+		toastContainer.remove();
+	}
+
+
+	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+		if(request.action === 'ping') {
+			sendResponse({
+				message: true
 			});
-		//}
-	}
-
-
-
-
-	function createFragment(htmlStr) {
-	    var frag = document.createDocumentFragment(),
-	        temp = document.createElement('div');
-	    temp.innerHTML = htmlStr;
-	    while (temp.firstChild) {
-	        frag.appendChild(temp.firstChild);
-	    }
-	    return frag;
-	}
+		}
+	});
 
 })();
