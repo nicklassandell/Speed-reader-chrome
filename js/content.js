@@ -7,7 +7,7 @@
 	html +=	 		'<img src="'+ chrome.extension.getURL('img/read.png') +'" alt="Read with Champ" />';
 	html +=		'</a>';
 	html += 	'<a title="Hide" id="sr-toast-hide" class="sr-toast-button">';
-	html += 		'<span>X</span>';
+	html +=	 		'<img src="'+ chrome.extension.getURL('img/hide.png') +'" alt="Read with Champ" />';
 	html += 	'</a>';
 	html += '</div>';
 

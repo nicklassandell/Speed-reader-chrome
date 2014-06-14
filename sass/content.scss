@@ -15,7 +15,7 @@ $button-size: 40px;
 		width: ($button-size*2) + 10px;
 
 		#sr-toast-hide {
-			opacity: 1;
+		visibility: visible;
 			@include transform(none);
 		}
 	}
@@ -26,17 +26,11 @@ $button-size: 40px;
 		right: 0;
 		display: block;
 		cursor: pointer;
-		background: rgba(50,50,50,.7);
 		height: $button-size;
 		width: $button-size;
-		line-height: $button-size;
-		text-align: center;
-		font-size: 13px;
-		font-family: sans-serif;
-		color: #FFF;
+		opacity: .7;
 		@include user-select(none);
 		@include transition-duration(.4s);
-		@include border-radius(100px);
 
 		&:nth-child(2n) {
 			right: 50px;
@@ -44,11 +38,11 @@ $button-size: 40px;
 
 		&:hover {
 			text-decoration: none;
-			background: rgba(50,50,50,.9);
+			opacity: .9;
 		}
 
 		&:active {
-			background: rgba(50,50,50,1);
+			opacity: 1;
 			@include transition-duration(.05s);
 		}
 	}
@@ -56,11 +50,9 @@ $button-size: 40px;
 
 
 #sr-toast {
-	opacity: 0;
 	@include transform(scale(.2));
 
 	&.visible {
-		opacity: 1;
 		@include transform(none);
 		@include transition-timing-function(cubic-bezier(0.000, 0.780, 0.190, 1.270));
 	}
@@ -73,12 +65,11 @@ $button-size: 40px;
 		bottom: 0;
 		margin: auto;
 		height: auto;
-		width: 24px;
 		display: inline-block;
 	}
 }
 
 #sr-toast-hide {
-	opacity: 0;
-	@include transform(scale(.2) translateX(50px));
+	visibility: hidden;
+	@include transform(scale(0) translateX(50px));
 }
