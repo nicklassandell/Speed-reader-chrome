@@ -30,7 +30,7 @@ $button-size: 40px;
 		width: $button-size;
 		opacity: .7;
 		@include user-select(none);
-		@include transition-duration(.4s);
+		@include transition-duration(.2s);
 
 		&:nth-child(2n) {
 			right: 50px;
